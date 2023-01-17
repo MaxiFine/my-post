@@ -12,7 +12,6 @@
         <p>{{ post.text|linebreaksbr }}</p>
         <a class="btn btn-default" href="{% url 'post_edit' post.pk %}">Edit <span class="glyphicon glyphicon-pencil"></span></a>  |
         <a class="btn btn-default" href="{% url 'post_new' %}">Add Post <span class="glyphicon glyphicon-plus"></span></a> | 
-        <a class="btn btn-danger ml-2" href="{% url 'post_delete' post.pk %}">Delete</a>
         <br>
     </div>
 

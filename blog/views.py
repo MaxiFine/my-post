@@ -18,6 +18,7 @@ def post_detail(request, pk):
 
 
 def post_new(request):
+    
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -26,8 +27,9 @@ def post_new(request):
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
+        
     else:
-        form = PostForm
+        form = PostForm()
         return render(request, 'blog\post_edit.html', {'form': form})
 
 
@@ -45,8 +47,3 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
         return render(request, 'blog/post_edit.html', {'form': form})
 
-
-class PostDeleteView(DeleteView):
-    model = Post
-    template_name = 'blog\post_delete.html'
-    success_url = reverse_lazy('post_list')
