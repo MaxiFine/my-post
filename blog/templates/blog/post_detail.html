@@ -12,12 +12,14 @@
         <p>{{ post.text|linebreaksbr }}</p>
         <a class="btn btn-default" href="{% url 'post_edit' post.pk %}">Edit <span class="glyphicon glyphicon-pencil"></span></a>  |
         <a class="btn btn-default" href="{% url 'post_new' %}">Add Post <span class="glyphicon glyphicon-plus"></span></a> | 
-        <a class="btn btn-danger ml-2" href="{% url 'post_delete' post.pk %}">Delete</a>
+        <a class="btn btn-danger ml-2" href="{% url 'post_delete' post.pk %}">Delete</a> | 
         <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
         <br>
 <br><br><br>
+        {% if comment_approve %}
         <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
         <br><br>
+        {% endif %}
             
         {% for comment in post.comments.all %}
             {% if user.is_authenticated or comment.approved_comment %}
@@ -26,15 +28,20 @@
                     {{ comment.created_date }}
                     {% if not comment.approved_comment %}
                         <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-            <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+                        <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
             {% endif %}
             </div>
             <strong>{{ comment.author }}</strong>
-            <p>{{ comment.text|linebreaks }}</p>
+            <p>{{ comment.text|linebreaks }}
+                {% if comment.approved_comment %}
+                <a class="btn btn-default" href="{% url 'delete_comment' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span>Delete</a> | 
+                <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
+                {% endif %}
+            </p>
             </div>
             {% endif %}
             {% empty %}
-            <p>No comments here yet :(</p>
+            <p>Post not published yet :(</p>
         {% endfor %}
        
     </div>

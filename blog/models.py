@@ -14,6 +14,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
 
 
+    # look for onl published post in the post
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -27,6 +28,7 @@ class Post(models.Model):
         return reverse('post_detail', args=[str(self.id)])
 
 
+    # look for only approved posts with true attribute
     def approved_comments(self):
         return self.comments.filter(approved_comment=True)
 
